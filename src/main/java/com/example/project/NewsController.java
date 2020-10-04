@@ -25,10 +25,9 @@ public class NewsController {
 	private NewsService nService;
 @GetMapping(value = "/api/news/topstories")
 	public  NewsWrapper getNews() {
-             System.out.println("#####################################");
-              System.out.println("in controller#");
-            System.out.println(nService.getTopStories());
-         System.out.println("#####################################");
+           
+            System.out.println(nService.getTopStories()); //for console
+        
                 return nService.getTopStories();
 	}
 
