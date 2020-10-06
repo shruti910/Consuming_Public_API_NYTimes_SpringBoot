@@ -11,16 +11,37 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	
+	 @Autowired
+    private AuthenticationEntryPoint myauthenticationEntryPoint;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+		 http
+          .authorizeRequests()
+          .anyRequest()
+          .authenticated()
+          .and()
+          .httpBasic()
+          .realmName(myauthenticationEntryPoint.getRealmName())
+          .authenticationEntryPoint(myauthenticationEntryPoint);
 	}
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		
-	}
+//	@Autowired
+//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//		
+//	}
+        @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    	
+    	auth
+          .inMemoryAuthentication()
+          .withUser("user")
+          .password("password")
+          .roles("USER")
+          .and()
+          .withUser("admin")
+          .password("admin")
+          .roles("USER", "ADMIN");
+    }
 
 }
